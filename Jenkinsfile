@@ -14,5 +14,15 @@ pipeline {
               sh "mvn test"
             }
         }
+
+        stage('Docker build and push') {
+            steps {
+              withDockerRegistry(credentialsId: 'docker-hub', url: '') {
+              sh 'printenv' // print env variables
+              sh 'docker build -t serge716/numeric-app:""$GIT_COMMIT"" .'
+              sh 'docker push serge716/numeric-app:""$GIT_COMMIT"" '
+              }
+            }
+        }
     }
 }
